@@ -55,8 +55,11 @@ print y_conv.get_shape()
 # Define loss and optimizer
 y_ = tf.placeholder(tf.float32, [None, 10])
 
-cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(y_conv, y_))
-train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+l2_loss = tf.nn.l2_loss(y_conv - y_)
+train_step = tf.train.AdamOptimizer(1e-4).minimize(l2_loss)
+
+# cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(y_conv, y_))
+# train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
